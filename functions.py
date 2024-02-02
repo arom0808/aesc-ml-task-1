@@ -1,84 +1,46 @@
+from collections import Counter
+import math
+
+
 def prod_non_zero_diag(x):
-    """Compute product of nonzero elements from matrix diagonal.
-
-    input:
-    x -- 2-d numpy array
-    output:
-    product -- integer number
-
-
-    Not vectorized implementation.
-    """
-
-    pass
+    ans = 1
+    for i in range(min(len(x), len(x[0]))):
+        if x[i][i] != 0:
+            ans *= x[i][i]
+    return ans
 
 
 def are_multisets_equal(x, y):
-    """Return True if both vectors create equal multisets.
-
-    input:
-    x, y -- 1-d numpy arrays
-    output:
-    True if multisets are equal, False otherwise -- boolean
-
-    Not vectorized implementation.
-    """
-
-    pass
+    return Counter(x) == Counter(y)
 
 
 def max_after_zero(x):
-    """Find max element after zero in array.
-
-    input:
-    x -- 1-d numpy array
-    output:
-    maximum element after zero -- integer number
-
-    Not vectorized implementation.
-    """
-
-    pass
+    return max(x[i] for i in range(1, len(x)) if x[i - 1] == 0)
 
 
 def convert_image(img, coefs):
-    """Sum up image channels with weights from coefs array
-
-    input:
-    img -- 3-d numpy array (H x W x 3)
-    coefs -- 1-d numpy array (length 3)
-    output:
-    img -- 2-d numpy array
-
-    Not vectorized implementation.
-    """
-
-    pass
+    return [[sum([int(coefs[i] * pix[i]) for i in range(3)]) for pix in row] for row in img]
 
 
 def run_length_encoding(x):
-    """Make run-length encoding.
+    a, b = [], []
+    if len(x) == 0:
+        return a, b
+    a.append(x[0])
+    b.append(1)
+    for i in range(1, len(x)):
+        if x[i] != x[i - 1]:
+            a.append(x[i])
+            b.append(1)
+        else:
+            b[-1] += 1
+    return a, b
 
-    input:
-    x -- 1-d numpy array
-    output:
-    elements, counters -- integer iterables
 
-    Not vectorized implementation.
-    """
-
-    pass
-
-
-def pairwise_distance(x, y):
-    """Return pairwise object distance.
-
-    input:
-    x, y -- 2d numpy arrays
-    output:
-    distance array -- 2d numpy array
-
-    Not vectorized implementation.
-    """
-
-    pass
+def pairwise_distance(X, Y):
+    m, n = len(X), len(Y)
+    distances = [[0] * n for _ in range(m)]
+    for i in range(m):
+        for j in range(n):
+            distances[i][j] = math.sqrt(sum((x - y) ** 2 for x, y in zip(X[i], Y[j])))
+    return distances
